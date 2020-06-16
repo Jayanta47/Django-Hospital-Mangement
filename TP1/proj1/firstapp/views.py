@@ -82,3 +82,8 @@ def loadcities(request):
 
 def testpage(request):
     return render(request, 'firstapp/test.html')
+
+
+def loadDocSelect(request):
+    specialization = request.GET.get('DocDept')
+    return render(request, 'firstapp/dropdown_list.html', {'doctors': ex.getDocSelect(specialization)})

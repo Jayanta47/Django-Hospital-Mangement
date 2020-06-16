@@ -88,4 +88,12 @@ def dictfetchall(cursor):
     ]
 
 
-
+def getDocSelect(specialization):
+    con = connect()
+    cur = con.cursor()
+    print(specialization)
+    specialization = "'"+specialization+"'"
+    cur.execute("select (FIRST_NAME||' '||LAST_NAME) as FULL_NAME from HOSPITAL.DOCTORS where SPECIALIZATION = " + specialization)
+    infoDict = dictfetchall(cur)
+    print(infoDict)
+    return infoDict

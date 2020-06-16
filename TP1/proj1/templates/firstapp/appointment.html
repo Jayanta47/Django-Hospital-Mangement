@@ -14,7 +14,7 @@
     <div class="jumbotron">
       <h3 align = 'center' class="">Make an Appointment</h3>
     </div>
-    <form class="form-creation" action="" method="post">
+    <form class="form-creation" action="" method="post" id = "appointmentForm" doc_list_url="{% url 'firstapp:ajax_load_docs' %}" novalidate>
       {% csrf_token %}
       <div class="form-group" align= 'left' width = '100px' >
         <label class="control-label col-sm-2" for="fname">Patient's First Name: </label>
@@ -62,19 +62,25 @@
 
         <label class="control-label col-sm-2" for="department">Department: </label>
         <div class="form-group col-sm-10">
-          <select class="form-control" name="department">
-            <option value="1">Orthopedics</option>
-            <option value="2">Physical Therapy</option>
-            <option value="3">Dental Care</option>
-            <option value="4">Cardiology</option>
-            <option value="5">Neurology</option>
-            <option value="6">Oncology</option>
-            <option value="7">Pediatrics</option>
-            <option value="8">Obstetrics and Gynocology</option>
-            <option value="9">Gastroenterology and Hepatology</option>
+          <select class="form-control" id = "id_dept" name="department" >
+            <option value="Orthopedics">Orthopedics</option>
+            <option value="Physiotherapy">Physiotherapy</option>
+            <option value="Dentistry">Dentistry</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Oncology">Oncology</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="Obstetrics and Gynocology">Obstetrics and Gynocology</option>
+            <option value="Gastroenterology and Hepatology">Gastroenterology and Hepatology</option>
           </select>
         </div>
 
+        <label class = "control-label col-sm-2" for="doc_select">Select Doctor: </label>
+        <div class="form-group col-sm-10">
+          <select class="form-control" id = "id_doc_select" name="doc_select" >
+
+          </select>
+        </div>
 
         <label class="control-label col-sm-2" for="desc">Problem description: </label>
         <div class="form-group col-sm-10">
@@ -105,8 +111,26 @@
 
 
 </form>
+<! the selection procedure for doctors to seek appointment >
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#id_dept").change(function () {
+      var url = $("#appointmentForm").attr("doc_list_url");  // get the url of the `load_cities` view
+      var DocId = $(this).val();  // get the selected country ID from the HTML input
 
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-docs/)
+        data: {
+          'DocDept': DocId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_doc_select").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
 
 </body>
 </html>

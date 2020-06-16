@@ -14,4 +14,5 @@ urlpatterns = [
     path('patient',views.patientpage, name ='patient'),
     path('test', views.testpage, name='test'),
     path('load_cities', views.loadcities, name='ajax_load_cities'),
+    path('load_doc_select', views.loadDocSelect, name = 'ajax_load_docs'),
 ]
