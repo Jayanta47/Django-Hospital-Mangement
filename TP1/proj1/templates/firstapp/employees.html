@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Employees List</title>
+  </head>
+  <body>
+    <div class="jumbotron" align = "center">
+        <h1>Employees</h1>
+    </div>
+
+    <div class="emp_table">
+      {% if employees %}
+        <table class="table table-hover table-dark">
+          <thead class="thead-dark">
+              <th scope="col"> Name</th>
+              <th scope="col">Age</th>
+              <th scope="col">Nationality</th>
+          </thead>
+          <tbody>
+
+          {% for emp in employees %}
+            <tr >
+              <td>{{emp.name}}</td>
+              <td>{{emp.age}}</td>
+              <td>{{emp.ntl}}</td>
+            </tr>
+
+          {% endfor %}
+
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+
+  </body>
+</html>

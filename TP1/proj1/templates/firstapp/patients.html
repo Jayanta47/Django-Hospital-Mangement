@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Patient List</title>
+  </head>
+  <body>
+    <div class="jumbotron" align = "center">
+        <h1>Registered Patients</h1>
+    </div>
+
+    <div class="pat_table">
+      {% if patients %}
+        <table class="table table-hover table-dark">
+          <thead >
+              <th scope="col">Patient ID</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone Number</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Address</th>
+              <th scope="col">BIO</th>
+              <th scope="col">Date of Birth</th>
+
+          </thead>
+          <tbody>
+
+          {% for pat in patients %}
+            <tr >
+              <td>{{pat.PATIENT_ID}}</td>
+              <td>{{pat.FIRST_NAME}}</td>
+              <td>{{pat.LAST_NAME}}</td>
+              <td>{{pat.EMAIL}}</td>
+              <td>{{pat.PHONE_NUM}}</td>
+              <td>{{pat.GENDER}}</td>
+              <td>{{pat.ADDRESS}}</td>
+              <td>{{pat.BIO}}</td>
+              <td>{{pat.DATE_OF_BIRTH}}</td>
+            </tr>
+
+          {% endfor %}
+
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'firstapp/js2/appForm.js'%}">
+    <title>Fill up</title>
+</head>
+<body>
+    <script src="{% static 'firstapp/js2/appForm.js' %}"></script>
+    <div class="jumbotron">
+      <h3 align = 'center' class="">Make an Appointment</h3>
+    </div>
+    <form class="form-creation" action="" method="post">
+      {% csrf_token %}
+      <div class="form-group" align= 'left' width = '100px' >
+        <label class="control-label col-sm-2" for="fname">Patient's First Name: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="fname" value="" placeholder="First Name"><br>
+        </div>
+
+        <label class="control-label col-sm-2" for="lname">Patient's Last Name: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="lname" value="" placeholder="Last Name"><br>
+        </div>
+
+        <label class="control-label col-sm-2" for="dob">Date of Birth: </label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" name="dob" value="" placeholder="Date of Birth"><br>
+        </div>
+
+        <label class="control-label col-sm-2" for="gender">Gender: </label>
+        <div class="form-group col-sm-10">
+          <select class="form-control" name="gender">
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+          </select>
+        </div>
+
+        <label  class="control-label col-sm-2" for="email">Email ID(must): </label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" name="email" value="" placeholder="email"><br>
+        </div>
+
+        <label class="control-label col-sm-2" for="phn">Phone Number: </label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" name="phn" value="" placeholder="phone number"><br>
+        </div>
+
+        <label class="control-label col-sm-2" for="address">Address: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="address" value="" placeholder="Present Address"><br>
+        </div>
+
+        <label class="control-label col-sm-2" for="appdate">Expected Date of Appointment: </label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" name="appdate" value="" placeholder=""><br>
+        </div>
+
+        <label class="control-label col-sm-2" for="department">Department: </label>
+        <div class="form-group col-sm-10">
+          <select class="form-control" name="department">
+            <option value="1">Orthopedics</option>
+            <option value="2">Physical Therapy</option>
+            <option value="3">Dental Care</option>
+            <option value="4">Cardiology</option>
+            <option value="5">Neurology</option>
+            <option value="6">Oncology</option>
+            <option value="7">Pediatrics</option>
+            <option value="8">Obstetrics and Gynocology</option>
+            <option value="9">Gastroenterology and Hepatology</option>
+          </select>
+        </div>
+
+
+        <label class="control-label col-sm-2" for="desc">Problem description: </label>
+        <div class="form-group col-sm-10">
+            <input type="text"class="form-control" name="desc" value="" placeholder="Problem Description">
+        </div>
+
+        <label class="control-label col-sm-2" for="yesorno">Have been a patient previously:</label>
+        <div class="form-group col-sm-10">
+          <label for="">
+            <input type="radio" id="yes" class="form-control" name="yesorno" value="yes" onchange="displayQuestion(this.value)">YES  </label>
+          <label for="">
+            <input type="radio" id="no" class="form-control" name="yesorno" value="no" onchange="displayQuestion(this.value)">NO  </label>
+            <br>
+            <div id="yesQuestion" class="form-group col-sm-10" style="display:none;"><br/>
+                <label for="">Input Patient ID: </label>
+                <input type="number" class="form-control" name="patientID" placeholder="Patient ID " />
+        </div>
+
+
+
+        </div>
+
+        <div text-align="center" class="form-group" >
+          <input type="submit" class = "btn btn-info btn-lg " name="sbtn" value="Submit">
+        </div>
+
+      </div>
+
+
+</form>
+
+
+
+</body>
+</html>
