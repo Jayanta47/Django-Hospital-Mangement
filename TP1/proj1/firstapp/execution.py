@@ -1,7 +1,8 @@
 import cx_Oracle
+from firstapp import generatorUtil
 
 
-def connect(user_n='hospital', pass_n='hospital' ,host='localhost', port='1521', service_n='ORCL'):
+def connect(user_n='hospital', pass_n='hospital', host='localhost', port='1521', service_n='ORCL'):
     dsn_tns = cx_Oracle.makedsn(host, port, service_name=service_n)
     conn = cx_Oracle.connect(user=user_n, password=pass_n, dsn=dsn_tns)
 
@@ -14,7 +15,7 @@ def getDoctorInfo():
     out = ''
     #print(c)
     for row in con:
-        out +=str(row) + ' \n '
+        out +=str(row) + '\n '
     return out
 
 
@@ -22,52 +23,22 @@ def patientregister(datadict):
     conn = connect()
     cur = conn.cursor()
 
-    idq = cur.execute("SELECT COUNT(*) FROM HOSPITAL.PATIENT")
-    num = idq.fetchone()[0]
-
-    num = num + 1
-    datadict['id'] = num
-    print("id = "+ str(num))
-    if datadict['gender'] == '1':
-        datadict['gender'] = 'Male'
-    else:
-        datadict['gender'] = 'Female'
+    idq = cur.execute("SELECT COUNT(*) FROM HOSPITAL.PATIENT").fetchone()[0]
+    datadict['id'] = int(generatorUtil.GenerateToken("prole", "patient", str(idq)).returnId())
 
     sql = ('insert into HOSPITAL.PATIENT(PATIENT_ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE_NUM,GENDER,ADDRESS,DATE_OF_BIRTH)'
            'values(:id,:fname,:lname,:email,:phn,:gender,:address,:dob)')
 
-    id = num
-    fname = datadict['fname']
-    lname = datadict['lname']
-    email = datadict['email']
-    phn = datadict['phn']
-    gender = datadict['gender']
-    address = datadict['address']
-    dob = datadict['dob']
-
-    # the data should be ordered inorder to be inserted, the data in a dict is not ordered
     try:
-        #con.execute(sql, [id,fname,lname,email,phn,gender,address,dob])
-        cur.execute(sql, [datadict['id'],datadict['fname'],datadict['lname'],datadict['email'],datadict['phn'],datadict['gender'],
-                 datadict['address'],datadict['dob']])
+        cur.execute(sql, [datadict['id'],datadict['fname'],datadict['lname'],datadict['email'],
+                          datadict['phn'],datadict['gender'],
+                          datadict['address'],datadict['dob']])
         conn.commit()
         print("successfully executed")
     except cx_Oracle.Error as error:
         print("Error occured")
         print(error)
 
-    obj = cur.execute("SELECT * from HOSPITAL.Patient")
-    out = ''
-    # print(c)
-    for row in obj:
-        out += str(row) + ' \n '
-
-    print(out)
-    # con.execute("""
-    #             insert into PATIENT (PATIENT_ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE_NUM,GENDER,ADDRESS,DATE_OF_BIRTH)
-    #             values (:id,:fname,:lname,:email,:phn,:gender,:address,:dob)
-    #             """,  datadict['id'],datadict['fname'],datadict['lname'],datadict['email'],datadict['phn'],datadict['gender'],
-    #             datadict['address'],datadict['dob'])
     return
 
 
@@ -91,9 +62,7 @@ def dictfetchall(cursor):
 def getDocSelect(specialization):
     con = connect()
     cur = con.cursor()
-    print(specialization)
     specialization = "'"+specialization+"'"
     cur.execute("select (FIRST_NAME||' '||LAST_NAME) as FULL_NAME from HOSPITAL.DOCTORS where SPECIALIZATION = " + specialization)
-    infoDict = dictfetchall(cur)
-    print(infoDict)
-    return infoDict
+    infodict = dictfetchall(cur)
+    return infodict

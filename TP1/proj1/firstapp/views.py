@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from  django.http import HttpRequest
 # Create your views here.
-import cx_Oracle
+
 from firstapp import execution as ex
+# from firstapp import dataModel as dm
+from firstapp import dataParsingUtil as parse
 
 
 def index(request):
@@ -35,24 +37,20 @@ def appointmentpage(request):
 
 def registerpage(request):
     if request.method == 'POST':
-        #listA = request.POST.items()
-        listA = dict(request.POST).items()
-        #print(listA)
-        listB = {}
-        # for key,value in listA:
-        #     print(str(key))
-        #     print(request.POST.get(str(key)))
-
-        for key,value in listA:
-            listB[str(key)] = request.POST.get(str(key))
-
-        # for x in listA:
-        #     print(x)
-
-        #print(listB)
-        ex.patientregister(listB)
+        ex.patientregister(parse.patientRegisterParse(request.POST))
     return render(request, 'firstapp/register.html')
 
+# def registerpage(request):
+#     if request.method == 'POST':
+#         listA = dict(request.POST).items()
+#         print(listA)
+#         listB = {}
+#         for key,value in listA:
+#             listB[str(key)] = request.POST.get(str(key))
+#
+#         fun = dm.Patient(listB)
+#         fun.savetoDB()
+#     return render(request, 'firstapp/register.html')
 
 def employeepage(request):
     employee = [
