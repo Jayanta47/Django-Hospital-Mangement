@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from  django.http import HttpRequest
+import json
 # Create your views here.
 
 from firstapp import execution as ex
@@ -35,7 +35,7 @@ def appointmentpage(request):
     return render(request, 'firstapp/appointment.html')
 
 
-def registerpage(request):
+def register_page(request):
     if request.method == 'POST':
         ex.patientregister(parse.patientRegisterParse(request.POST))
     return render(request, 'firstapp/register.html')
@@ -51,6 +51,7 @@ def registerpage(request):
 #         fun = dm.Patient(listB)
 #         fun.savetoDB()
 #     return render(request, 'firstapp/register.html')
+
 
 def employeepage(request):
     employee = [
@@ -85,3 +86,36 @@ def testpage(request):
 def loadDocSelect(request):
     specialization = request.GET.get('DocDept')
     return render(request, 'firstapp/dropdown_list.html', {'doctors': ex.getDocSelect(specialization)})
+
+
+def schedule(request):
+    time_lst = ex.get_time_category()
+    return render(request, 'firstapp/scheduleTable.html', {'time_slot': time_lst})
+
+
+def doc_data(request):
+    docId = request.GET.get('docId', None)
+    doc_lst = ex.get_doc_list_by_id(docId)
+    return HttpResponse(json.dumps(doc_lst))
+
+
+def doc_schedule(request):
+    docId = request.GET.get('docId', None)
+    doc_sch_lst = ex.get_doc_schedule(docId)
+    return HttpResponse(json.dumps(doc_sch_lst))
+
+
+def doc_save_schedule(request):
+    docId = request.GET.get('docId', None)
+    date = request.GET.get('date', None)
+    time_slot = request.GET.get('time_slot', None)
+    msg = ex.save_doc_schedule(docId, date, time_slot)
+    return HttpResponse(json.dumps(msg))
+
+
+def doc_delete_schedule(request):
+    del_id_list = request.GET.get('list', None)
+    del_id_list = json.loads(del_id_list)
+    for id in del_id_list:
+        ex.delete_schedule(id)
+    return HttpResponse("")

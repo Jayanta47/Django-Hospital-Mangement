@@ -14,6 +14,10 @@ divClass = {
 
 class GenerateToken:
 
+    # cat1 = staff, prole, serial or others
+    # cat2 = members of staff: doctor, nurse, receptionist etc
+    # serial = serial number of the person
+    # N.B -  serial input as a string, not number
     def __init__(self, cat1, cat2, serial):
         self.cat1 = cat1
         self.cat2 = cat2

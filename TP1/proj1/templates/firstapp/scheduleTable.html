@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title> Doctor Scheduling Page </title>
+
+  </head>
+  <body>
+    <div class="jumbotron" align = "center">
+        <h1>Schedule DOCTOR Worktime</h1>
+    </div>
+
+    <div class="form-group" align= 'left' width = '100px' >
+    <label class = "control-label col-sm-2" for="">Doctor's ID: </label>
+        <div class="form-group col-sm-10">
+          <input type="text" class="form-control" id="docID" value="" placeholder="Type Doctor's Id e.g. 121***"><br>
+        </div>
+
+      <div class="col-sm-10">
+        <label for="name" >Name: </label> <label for="" id = "doc_name"></label><br>
+        <label for="desg">Designation:</label> <label for="" id = "designation"></label><br>
+          <label for="spec">Specialization:</label> <label for="" id = "specialization"></label><br>
+          <input type="button" id ="show_table_button" value="View Schedule Table">
+      </div>
+    </div>
+
+
+    <h3 align = 'center'><b><u>Schedule Table</u></b></h3>
+
+
+    <form class="form-creation" action="" method="post" id = "datetimeForm"  novalidate>
+      {% csrf_token %}
+
+      <div class="form-group" align= 'left' width = '100px' >
+        <label class="control-label col-sm-2" >Pick Date: </label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" id="next_date">
+        </div>
+
+        <label class="control-label col-sm-2" >Pick Time Slot: </label>
+        <div class="col-sm-10">
+          <select class="form-control" id="time_slot_pick">
+                <option value="">--Select--</option>
+                {% if time_slot != null %}
+                    {% for time in time_slot%}
+                        <option value="{{ time.TIME_ID }}">{{ time.SHIFT_TITLE }}</option>
+                    {% endfor %}
+                {% endif %}
+          </select>
+        </div>
+        <br>
+        <div class="col-sm-10">
+            <input type="button" id="add_schedule" value="Add to Table">
+        </div>
+
+      </div>
+    </form>
+
+
+    <table class="table">
+      <thead>
+        <th>Select</th>
+        <th>Schedule ID</th>
+        <th>Date</th>
+        <th>Shift</th>
+        <th>Time Duration</th>
+      </thead>
+      <tbody id = "table_body">
+
+      </tbody>
+    </table>
+
+    <div class="form-group col-sm-10">
+        <input type="button"  id="delete_row" value="Delete Rows" ><br>
+    </div>
+  </body>
+</html>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+      // load the doc info
+    $("#docID").change(function() {
+        var url = 'load_doc_info'
+        var docId = $(this).val();
+
+        $.ajax({
+            url : url,
+            data : {
+                'docId' : docId
+            },
+            dataType : 'json',
+            success: function(data) {
+                var name = "";
+                var des = "";
+                var spec = ""
+                if(data.length === 0){
+                    name = "Not found(Error 404)";
+                    des = "Not found(Error 404)";
+                    spec = "Not found(Error 404)";
+                }
+                else {
+                    name = data[0].NAME;
+                    des = data[0].DESIGNATION;
+                    spec = data[0].SPECIALIZATION;
+                }
+                $("#doc_name").empty();
+                $("#designation").empty();
+                $("#specialization").empty();
+                $("#doc_name").append(name);
+                $("#designation").append(des);
+                $("#specialization").append(spec);
+            }
+        })
+
+    });
+
+    </script>
+
+    <script>
+        // loads schedule table rows
+        $("#show_table_button").click(function () {
+            var url = 'data_schedule_prev'
+            var docId = $("#docID").val();
+            $.ajax({
+                url : url,
+                data : {
+                    'docId' : docId
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var id = "";
+                    var date = "";
+                    var time_category = "";
+                    var duration = "";
+                    $("#table_body").empty();
+                    if (data.length > 0) {
+                        for(var i = 0; i < data.length; i++) {
+                            id = data[i].SCHEDULE_ID;
+                            date = data[i].FULL_DATE;
+                            time_category = data[i].SHIFT_TITLE;
+                            duration = data[i].START_TIME + " - " + data[i].END_TIME;
+                            var markup = "<tr class='rows'><td><input type = 'checkbox' name='record'></td>"
+                                + "<td class='id'>"+id+"</td><td>"+date+"</td><td>"
+                                +time_category+"</td><td>"+duration+"</td></tr>";
+                            $("#table_body").append(markup);
+                        }
+                    }
+
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $("#next_date").change(function () {
+            console.log($(this).val());
+        });
+
+    </script>
+
+    <script>
+        $("#time_slot_pick").change(function () {
+            console.log($(this).val());
+        });
+    </script>
+
+    <script>
+        // adds the schedule to the schedule table as a new row
+        $("#add_schedule").click(function () {
+            var url = 'add_data'
+            var date = $("#next_date").val();
+            var timeslot = $("#time_slot_pick").val();
+            if (date == "" || timeslot == ""){
+                alert("The boxes are empty");
+            }
+            else {
+                $.ajax({
+                    url : url,
+                    data : {
+                        "docId" : $("#docID").val(),
+                        "date" : date,
+                        "time_slot": timeslot
+                    },
+                    dataType: 'json',
+                    success : function (data) {
+                        //console.log(data);
+                        if(data == "Done") {
+                            $("#show_table_button").trigger("click");
+                            $("#next_date").empty();
+                        }
+                        else {
+                            alert("The Designated Schedule already exists")
+                        }
+                    }
+                });
+
+            }
+
+        })
+    </script>
+
+    <script>
+        // deletes the selected rows
+        $("#delete_row").click(function () {
+            if(confirm("Are you sure you want to delete these entry(s)?"))
+            {
+                var ids = [];
+                $("tr.rows").each(function () {
+                    if($(this).find('input[name="record"]').is(":checked")) {
+                        var Id = $(this).find(".id").html();
+                        ids.push(Id);
+                        $(this).remove()
+                    }
+                });
+                if(ids.length > 0) {
+                    var url = 'delete_schedule';
+                    $.ajax({
+                        url : url,
+                        data : {
+                            'list' : JSON.stringify(ids)
+                        },
+                        dataType: 'json',
+                    })
+                }
+            }
+
+        });
+    </script>
+
+
+

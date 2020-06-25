@@ -1,0 +1,13 @@
+1 08:00:00 10:00:00 Morning Checkup
+2 14:00:00 16:00:00 Evening Checkup
+3 08:00:00 14:00:00 Morning Shift
+4 14:00:00 20:00:00 Evening Shift
+5 20:00:00 08:00:00 Night Shift
+6 16:00:00 19:00:00 Chamber Shift 1
+7 19:00:00 22:00:00 Chamber Shift 2
+8 10:00:00 12:00:00 Operation Theatre(M)
+9 14:00:00 16:00:00 Operation Theatre(E)
+10 21:00:00 23:00:00 Operation Theatre(N)
+11 09:00:00 13:00:00 Outdoors
+12 09:00:00 17:00:00 Office Shift 1
+13 17:00:00 22:00:00 Office Shift 2

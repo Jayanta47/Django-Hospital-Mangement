@@ -6,3 +6,5 @@ def patientRegisterParse(post):
     for value in patientCols:
         datadict[value] = post.get(value)
     return datadict
+
+
