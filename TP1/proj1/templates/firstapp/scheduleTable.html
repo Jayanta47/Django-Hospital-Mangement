@@ -1,5 +1,6 @@
 {% load static %}
-<!DOCTYPE html>
+
+<! DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -9,29 +10,30 @@
 
   </head>
   <body>
-    <div class="jumbotron" align = "center">
-        <h1>Schedule DOCTOR Worktime</h1>
+    <div class="jumbotron" align = "center" style="background-color: #1F1F1F">
+        <h2 style="font-family: 'Century Schoolbook'; color: #ff3300;">Schedule DOCTOR Worktime</h2>
     </div>
 
-    <div class="form-group" align= 'left' width = '100px' >
+    <div class="form-group" align= 'left' width = '100px' style="font-family: 'Bookman Old Style'; color: #009DAF; font-size: large">
     <label class = "control-label col-sm-2" for="">Doctor's ID: </label>
         <div class="form-group col-sm-10">
           <input type="text" class="form-control" id="docID" value="" placeholder="Type Doctor's Id e.g. 121***"><br>
         </div>
 
       <div class="col-sm-10">
+          <h5>
         <label for="name" >Name: </label> <label for="" id = "doc_name"></label><br>
         <label for="desg">Designation:</label> <label for="" id = "designation"></label><br>
           <label for="spec">Specialization:</label> <label for="" id = "specialization"></label><br>
-          <input type="button" id ="show_table_button" value="View Schedule Table">
+          <input type="button" id ="show_table_button" class="btn btn-info" value="View Schedule Table"> </h5>
       </div>
     </div>
 
 
-    <h3 align = 'center'><b><u>Schedule Table</u></b></h3>
+    <h3 align = 'center' style="color: #3f51b5"><b><u>Schedule Table</u></b></h3>
 
 
-    <form class="form-creation" action="" method="post" id = "datetimeForm"  novalidate>
+    <form class="form-creation" action="" method="post" id = "datetimeForm"  novalidate style="font-family: 'Bookman Old Style'">
       {% csrf_token %}
 
       <div class="form-group" align= 'left' width = '100px' >
@@ -53,14 +55,14 @@
         </div>
         <br>
         <div class="col-sm-10">
-            <input type="button" id="add_schedule" value="Add to Table">
+            <input type="button" id="add_schedule" class="btn btn-info" value="Add to Table">
         </div>
 
       </div>
     </form>
 
 
-    <table class="table">
+    <table class="table table-hover table-dark">
       <thead>
         <th>Select</th>
         <th>Schedule ID</th>
@@ -68,13 +70,13 @@
         <th>Shift</th>
         <th>Time Duration</th>
       </thead>
-      <tbody id = "table_body">
+      <tbody id = "table_body" style="color: #ff3300">
 
       </tbody>
     </table>
 
     <div class="form-group col-sm-10">
-        <input type="button"  id="delete_row" value="Delete Rows" ><br>
+        <input type="button"  id="delete_row" class="btn btn-info" value="Delete Rows" ><br>
     </div>
   </body>
 </html>

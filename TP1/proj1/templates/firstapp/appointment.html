@@ -1,136 +1,577 @@
-<!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
+
+<! DOCTYPE html >
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    {% load static %}
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">-->
+    <link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet"
+        type="text/css" />
     <link rel="stylesheet" href="{% static 'firstapp/js2/appForm.js'%}">
-    <title>Fill up</title>
+    <title>Appointment Form</title>
 </head>
 <body>
     <script src="{% static 'firstapp/js2/appForm.js' %}"></script>
-    <div class="jumbotron">
-      <h3 align = 'center' class="">Make an Appointment</h3>
+
+    <div id = "main">
+    <div class="jumbotron" style="background-color: #1F1F1F">
+      <h2 align = 'center' style="font-family: 'Century Schoolbook'; color: #ff3300;">Appointment Form</h2>
     </div>
-    <form class="form-creation" action="" method="post" id = "appointmentForm" doc_list_url="{% url 'firstapp:ajax_load_docs' %}" novalidate>
-      {% csrf_token %}
+
+    <label class="control-label col-sm-2" >Have been a patient previously:</label>
+        <div class="col-sm-10">
+          <label class="col-sm-2">
+            <input type="radio" id="yes" class="form-control" value="yes" name="yes_bt">  YES  </label>
+          <label class="col-sm-2">
+            <input type="radio" id="no" class="form-control" value="no" name="no_bt">  NO  </label>
+
+            <div id="yesQuestion" class="form-group col-sm-10" style="display:none;">
+                <label for="prev_pat_id" class="mr-sm-2">Input Patient ID: </label>
+                <input type="number" id="prev_pat_id" class="form-control mr-sm-2" name="patientID" placeholder="Patient ID " >
+                <label for="pat_pass" class="mr-2">Password</label>
+                <input type="password" id="pat_pass" class="form-control mr-sm-2" name="patientPass">
+                <input type="button" id="get_pat_details" class="btn btn-info" value="Show Details">
+            </div>
+        </div>
+
+    <div>
+      <form class="form-creation" action="" method="post" id = "appointmentForm" doc_list_url="{% url 'firstapp:ajax_load_docs' %}" novalidate>
+        {% csrf_token %}
+
       <div class="form-group" align= 'left' width = '100px' >
+
         <label class="control-label col-sm-2" for="fname">Patient's First Name: </label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="fname" value="" placeholder="First Name"><br>
+          <input type="text" class="form-control" id="fname" value="" placeholder="First Name"><br>
         </div>
 
         <label class="control-label col-sm-2" for="lname">Patient's Last Name: </label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="lname" value="" placeholder="Last Name"><br>
+          <input type="text" class="form-control" id="lname" value="" placeholder="Last Name"><br>
         </div>
 
         <label class="control-label col-sm-2" for="dob">Date of Birth: </label>
         <div class="col-sm-10">
-          <input type="date" class="form-control" name="dob" value="" placeholder="Date of Birth"><br>
+          <input type="date" class="form-control" id="dob" value="" placeholder="Date of Birth"><br>
         </div>
 
         <label class="control-label col-sm-2" for="gender">Gender: </label>
         <div class="form-group col-sm-10">
-          <select class="form-control" name="gender">
-            <option value="1">Male</option>
-            <option value="2">Female</option>
+          <select class="form-control" id="gender">
+            <option value="">--select--</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
           </select>
         </div>
 
         <label  class="control-label col-sm-2" for="email">Email ID(must): </label>
         <div class="col-sm-10">
-          <input type="email" class="form-control" name="email" value="" placeholder="email"><br>
+          <input type="email" class="form-control" id="email" value="" placeholder="email"><br>
         </div>
 
         <label class="control-label col-sm-2" for="phn">Phone Number: </label>
         <div class="col-sm-10">
-            <input type="number" class="form-control" name="phn" value="" placeholder="phone number"><br>
+            <input type="number" class="form-control" id="phn" value="" placeholder="phone number"><br>
         </div>
 
         <label class="control-label col-sm-2" for="address">Address: </label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="address" value="" placeholder="Present Address"><br>
+          <input type="text" class="form-control" id="address" value="" placeholder="Present Address"><br>
         </div>
 
-        <label class="control-label col-sm-2" for="appdate">Expected Date of Appointment: </label>
-        <div class="col-sm-10">
-          <input type="date" class="form-control" name="appdate" value="" placeholder=""><br>
-        </div>
-
-        <label class="control-label col-sm-2" for="department">Department: </label>
-        <div class="form-group col-sm-10">
-          <select class="form-control" id = "id_dept" name="department" >
-            <option value="Orthopedics">Orthopedics</option>
-            <option value="Physiotherapy">Physiotherapy</option>
-            <option value="Dentistry">Dentistry</option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Neurology">Neurology</option>
-            <option value="Oncology">Oncology</option>
-            <option value="Pediatrics">Pediatrics</option>
-            <option value="Obstetrics and Gynocology">Obstetrics and Gynocology</option>
-            <option value="Gastroenterology and Hepatology">Gastroenterology and Hepatology</option>
-          </select>
-        </div>
-
-        <label class = "control-label col-sm-2" for="doc_select">Select Doctor: </label>
-        <div class="form-group col-sm-10">
-          <select class="form-control" id = "id_doc_select" name="doc_select" >
-
-          </select>
-        </div>
-
-        <label class="control-label col-sm-2" for="desc">Problem description: </label>
-        <div class="form-group col-sm-10">
-            <input type="text"class="form-control" name="desc" value="" placeholder="Problem Description">
-        </div>
-
-        <label class="control-label col-sm-2" for="yesorno">Have been a patient previously:</label>
-        <div class="form-group col-sm-10">
-          <label for="">
-            <input type="radio" id="yes" class="form-control" name="yesorno" value="yes" onchange="displayQuestion(this.value)">YES  </label>
-          <label for="">
-            <input type="radio" id="no" class="form-control" name="yesorno" value="no" onchange="displayQuestion(this.value)">NO  </label>
-            <br>
-            <div id="yesQuestion" class="form-group col-sm-10" style="display:none;"><br/>
-                <label for="">Input Patient ID: </label>
-                <input type="number" class="form-control" name="patientID" placeholder="Patient ID " />
-        </div>
+      </div>
+    </form>
+    </div>
 
 
 
-        </div>
 
-        <div text-align="center" class="form-group" >
-          <input type="submit" class = "btn btn-info btn-lg " name="sbtn" value="Submit">
-        </div>
+
+
+
+    <div id="load_pat_info" style="display: none; width: 40%; margin: 0 auto;font-family: Cambria; color: #990099">
+        <br><br>
+        <h3><label ><u>Patient's First Name: </u></label>
+          <label id="l_fname"></label><br>
+
+        <label ><u>Patient's Last Name: </u></label>
+          <label id="l_lname"></label><br>
+
+
+        <label for="l_dob"><u>Date of Birth: </u></label>
+          <label id="l_dob"></label><br>
+
+
+        <label for="l_gender"><u>Gender: </u></label>
+          <label id="l_gender"></label><br>
+
+
+        <label for="l_email"><u>Email ID(must): </u></label>
+          <label id="l_email"></label><br>
+
+
+        <label for="l_phn"><u>Phone Number: </u></label>
+            <label id="l_phn"></label><br>
+
+
+        <label for="l_address"><u>Address: </u></label>
+            <label id="l_address"></label></h3><br>
+
 
       </div>
 
 
-</form>
-<! the selection procedure for doctors to seek appointment >
+
+    <br><h3 align="center" style="font-family: 'Century Schoolbook'; color: #3f51b5"><b>Select Appointment Date and Doctor</b></h3><br>
+<!--        <label class="control-label col-sm-2" for="appdate">Expected Date of Appointment: </label>-->
+<!--        <div class="col-sm-10">-->
+<!--          <input type="text" id="appdate" class="form-control" value="" placeholder=""><br>-->
+<!--        </div>-->
+
+
+        <label class="control-label col-sm-2" for="department_id">Department: </label>
+        <div class="form-group col-sm-10">
+          <select class="form-control" id = "department_id" >
+            <option value="0">--select--</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Orthopedics">Orthopedics</option>
+            <option value="Physiotherapy">Physiotherapy</option>
+            <option value="Dentistry">Dentistry</option>
+            <option value="Oncology">Oncology</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="Obstetrics and Gynocology">Obstetrics and Gynocology</option>
+            <option value="Gastroenterology and Hepatology">Gastroenterology and Hepatology</option>
+            <option value="Dermatology and Venereology">Dermatology and Venereology</option>
+            <option value="Medicine">Medicine</option>
+            <option value="Ophthalmology">Ophthalmology</option>
+          </select>
+        </div>
+
+        <label class = "control-label col-sm-2" for="id_doc_select">Select Doctor: </label>
+        <div class="form-group col-sm-10">
+          <select class="form-control" id = "id_doc_select" name="doc_select" >
+          </select>
+            <input type="button" id="view_doc" class="btn btn-info" value="Show Doctor Details">
+        </div>
+
+        <label class="control-label col-sm-2" for="desc">Problem description: </label>
+        <div class="form-group col-sm-10">
+            <input type="text"class="form-control" id="desc" value="" placeholder="Problem Description">
+        </div>
+
+        <div text-align="center" class="form-group col-sm-2" >
+          <input type="submit" id="app_submit" class = "btn btn-info btn-lg " name="sbtn" value="Submit">
+        </div>
+
+
+</div>
+
+
+    <div id = "aux" style="display: none;">
+        <div class="jumbotron" align = "center" style="background-color: #1F1F1F">
+            <h2 style="font-family: 'Century Schoolbook'; color: #ff3300;">Date and Time Selection</h2>
+        </div>
+
+        <div id = "info_table" class="">
+            <table class="table table-borderless">
+                <thead style="font-family: Arial; background-color: #0b0b0b; color: #FFFFFF; font-size: large;">
+                    <th scope="col" >Title</th>
+                    <th scope="col" >Description</th>
+                </thead>
+                <tbody id="info_table_body" style="font-family: Consolas; color: #009DAF;">
+                </tbody>
+            </table>
+        </div>
+
+        <h2 align="center" style="color: #3f51b5;font-family: 'Bookman Old Style'"><u>Possible Appointment Dates</u></h2><br><br>
+        <div id="app_select_table">
+            <table class="table table-hover" style="background-color: #1F1F1F; color: #FFFFFF;">
+                <thead style="font-family: Arial">
+                    <th scope="col">Select</th>
+                    <th scope="col">Date ID</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Start Time</th>
+                    <th scope="col">End Time</th>
+                    <th scope="col">Time ID</th>
+                </thead>
+                <tbody id="app_select_body"  style="font-family: 'DejaVu Sans'; color:#ff3300"></tbody>
+            </table>
+        </div>
+
+        <div text-align="center" class="form-group col-sm-2" >
+          <input type="submit" id="app_confirm" class = "btn btn-info btn-lg " name="confirm" value="Confirm">
+        </div>
+
+        <div id="msg_panel" class="panel panel-default " style="font-size: large; font-family: 'Bookman Old Style';
+            display: none; color: #3f51b5; padding: 10px; margin-top: 100px">
+            <div class="panel-heading">Return Message:</div>
+            <div class="panel-body" id="return_msg"></div>
+        </div>
+    </div>
+
+
+
+<!-- the selection procedure for doctors to seek appointment -->
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script>
-    $("#id_dept").change(function () {
-      var url = $("#appointmentForm").attr("doc_list_url");  // get the url of the `load_cities` view
-      var DocId = $(this).val();  // get the selected country ID from the HTML input
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-      $.ajax({                       // initialize an AJAX request
-        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-docs/)
+    <script>
+    $("#department_id").change(function () {
+      var url = 'load_dept_doc';
+      var dept_name = $(this).val();
+
+      $.ajax({
+        url: url,
         data: {
-          'DocDept': DocId       // add the country id to the GET parameters
+          'dept_name': dept_name
         },
-        success: function (data) {   // `data` is the return of the `load_cities` view function
-          $("#id_doc_select").html(data);  // replace the contents of the city input with the data that came from the server
+        dataType : 'json',
+        success: function (data) {
+           if(data.length === 0) {
+               alert("Sorry! There is currently no doctor in "+dept_name+" department");
+           }
+           else {
+               $("#id_doc_select").empty();
+               $("#id_doc_select").append("<option values='0'>--select--</option>")
+               for(var i = 0; i < data.length; i++) {
+                    var markup = "<option value="+ "'" + data[i].DOC_ID+"'>"+data[i].DOC_NAME+"</option>";
+                    $("#id_doc_select").append(markup);
+                }
+           }
+
         }
       });
 
     });
   </script>
+
+
+    <script>
+    $("#get_pat_details").click(function () {
+      var pat_id = $("#prev_pat_id").val();
+      var url = 'load_pat_info';
+      if (pat_id === "")
+      {
+          alert("The Patient Id field is empty!!");
+      }
+      $.ajax({
+          url:url,
+          data : {
+              'pat_id' : pat_id
+          },
+          success: function (data) {
+              data = JSON.parse(data);
+              if(data.length === 0){
+                  $("#prev_pat_id").val("");
+                  $("#load_pat_info").hide();
+                  alert("The patient ID does not exist!");
+              }
+              else {
+                  $("#load_pat_info").show();
+
+                  $("#l_fname").empty();
+                  $("#l_fname").append(data[0].FIRST_NAME);
+
+                  $("#l_lname").empty();
+                  $("#l_lname").append(data[0].LAST_NAME);
+
+                  $("#l_dob").empty();
+                  $("#l_dob").append(data[0].DATE_OF_BIRTH);
+
+                  $("#l_gender").empty();
+                  $("#l_gender").append(data[0].GENDER);
+
+                  $("#l_email").empty();
+                  $("#l_email").append(data[0].EMAIL);
+
+                  $("#l_phn").empty();
+                  $("#l_phn").append(data[0].PHONE_NUM);
+
+                  $("#l_address").empty();
+                  $("#l_address").append(data[0].ADDRESS);
+
+                  $("#appointmentForm").hide();
+
+              }
+
+          }
+      })
+
+    })
+  </script>
+
+
+    <script>
+        $("#yes").click(function () {
+            $("#no").prop("checked", false);
+            if($("input[name=yes_bt]:checked").length>0) {
+                $("#yesQuestion").show();
+
+            }
+
+        })
+
+        $("#no").click(function () {
+            $("#yes").prop("checked", false);
+            if($("input[name=no_bt]:checked").length>0) {
+                $("#yesQuestion").hide();
+                $("#prev_pat_id").val("");
+                $("#load_pat_info").hide();
+                $("#appointmentForm").show();
+            }
+        })
+    </script>
+
+
+    <script>
+        $(function () {
+            var min_date = new Date();
+            min_date.setDate(min_date.getDate()+1);
+            $("#appdate").datepicker({
+                format : "yyyy/mm/dd",
+                autoClose : true,
+                todayHighlight : true,
+                showOtherMonths : true,
+                selectOtherMonths: true,
+                changeMonth : true,
+                changeYear : true,
+                minDate: min_date
+            });
+        })
+    </script>
+
+
+    <script>
+        $("#app_submit").click(function () {
+
+            // const app_date = $("#appdate").val();
+            const doc_id = $("#id_doc_select").children("option:selected").val();
+            const desc = $("#desc").val();
+            const pat_id = $("#prev_pat_id").val();
+            if(doc_id === "" || desc === "") {
+                alert("Fill the Appointment Criterion Properly!!");
+            }
+            else {
+                if ($("input[name=yes_bt]:checked").length>0) {
+                    //console.log("docid="+doc_id);
+                    if (pat_id.length > 0) {
+                        //console.log(pat_id);
+                        $("#get_pat_details").trigger("click");
+                        $.ajax({
+                            url : 'aux_app_reg',
+                            data : {
+                                'pat_id' : pat_id,
+                                'p_f_name' : "",
+                                'p_email' : "",
+                                'doc_id' : doc_id,
+                                'prob_desc' : desc
+                            },
+                            dataType : 'json',
+                            success : function (response) {
+                                $("#main").hide();
+                                console.log(response);
+                                info = response[0];
+                                date = response[1];
+                                info_title = Object.keys(info);
+                                $("#info_table_body").empty();
+                                $("#app_select_body").empty();
+
+                                if (date.length === 0) {
+                                    alert("Sorry!! The appointment fixture for the desired doctor is currently unavailable.")
+                                }
+
+                                for (var i =0; i < info_title.length; i++) {
+                                    var nclass = ""
+                                    if (i == 0) nclass = "table_pat_id";
+                                    if (i == 1) nclass = "table_doc_id";
+                                    if (i == 2) nclass = "table_desc";
+                                    var markup = "<tr class='rows'><td>"+info_title[i]+"</td>"
+                                    + "<td id='" + nclass +"'>"+info[info_title[i]]+"</td>";
+                                    $("#info_table_body").append(markup);
+                                }
+
+                                for(var i = 0; i < date.length; i++) {
+                                    date_id = date[i]['KEY_DATE'];
+                                    fulldate = date[i]['FULL_DATE'];
+                                    start = date[i]['START_TIME'];
+                                    end = date[i]['END_TIME'];
+                                    time_id = date[i]['TIME_ID'];
+                                    var markup = "<tr class='rows'><td><input type = 'checkbox' name='record' class='check'></td>"
+                                    + "<td class='id'>"+date_id+"</td><td>"+fulldate+"</td><td>"+start+"</td><td>"
+                                    +end+ "</td><td class='time_id'>"+time_id+"</td></tr>";
+                                    $("#app_select_body").append(markup);
+                                }
+
+                                $("#aux").show();
+
+                            }
+                        })
+                    }
+                    else {
+                        alert("Patient ID box is empty");
+                    }
+                }
+                else {
+                const f_name = $("#fname").val();
+                if(f_name === "") alert("First Name Box is empty!!");
+                const l_name = $("#lname").val();
+                if(l_name === "") alert("Last Name Box is empty!!");
+                const dob = $("#dob").val();
+                if(dob === "") alert("Date of Birth Box is empty!!");
+                const gender = $("#gender").val();
+                if(gender === "") alert("Gender selection is empty!!");
+                const email = $("#email").val();
+                if(email === "") alert("Email Box is empty!!");
+                const phn = $("#phn").val();
+                if(phn === "") alert("Phone Number Box is empty!!");
+                const address = $("#address").val();
+                if(address === "") alert("Address Box is empty!!");
+                const status = "TP";
+
+                $.ajax({
+                    url : 'reg_temp_pat',
+                    data : {
+                        'f_name' : f_name,
+                        'l_name' : l_name,
+                        'dob' : dob,
+                        'gender' : gender,
+                        'email' : email,
+                        'phn' : phn,
+                        'address' : address,
+                        'status' : status,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        //console.log(data);
+                        if (data === "successful") {
+                            //console.log("Patient successfully registered");
+                            $.ajax({
+                                url : 'aux_app_reg',
+                                data : {
+                                    'pat_id' : "",
+                                    'p_f_name' : f_name,
+                                    'p_email' : email,
+                                    'doc_id' : doc_id,
+                                    'prob_desc' : desc
+                                },
+                                dataType : 'json',
+                                success : function (response) {
+                                $("#main").hide();
+                                console.log(response);
+                                info = response[0];
+                                date = response[1];
+                                info_title = Object.keys(info);
+                                $("#info_table_body").empty();
+                                $("#app_select_body").empty();
+
+
+                                for (var i =0; i < info_title.length; i++) {
+                                    var markup = "<tr class='rows'><td>"+info_title[i]+"</td>"
+                                    + "<td>"+info[info_title[i]]+"</td>";
+                                    $("#info_table_body").append(markup);
+                                }
+
+                                for(var i = 0; i < date.length; i++) {
+                                    fulldate = date[i]['FULL_DATE'];
+                                    start = date[i]['START_TIME'];
+                                    end = date[i]['END_TIME'];
+                                    var markup = "<tr class='rows'><td><input type = 'checkbox' name='record'></td>"
+                                    + "<td >"+fulldate+"</td><td>"+start+"</td><td>"
+                                    +end+"</td></tr>";
+                                    $("#app_select_body").append(markup);
+                                }
+
+                                $("#aux").show();
+
+                                if (date.length === 0) {
+                                    alert("Sorry!! The appointment fixture for the desired doctor is currently unavailable.")
+                                }
+
+                                }
+                            })
+
+                        }
+                        else {
+                            if (data === "duplicate") {
+                                alert("The email id already exists");
+                            }
+                            else {
+                                alert("Technical Error or improper values provided!");
+                            }
+                        }
+
+                    }
+
+                })
+
+            }
+            }
+
+        })
+    </script>
+
+
+    <script>
+        $("#app_confirm").click(function () {
+            if(confirm("Are you SURE you want this appointment date?")) {
+                var pat_id = $("#table_pat_id").html();
+                var doc_id = $("#table_doc_id").html();
+                var desc = $("#table_desc").html();
+                var date_key = "";
+                var time_id = "";
+                var flag = 0;
+                $("tr.rows").each(function () {
+                    if($(this).find('input[name="record"]').is(":checked")) {
+                        flag++;
+                        if (flag >=2) {
+                            alert("You cannot choose more than one appointment!!");
+                            return false;
+                        }
+                        date_key = $(this).find(".id").html();
+                        time_id = $(this).find(".time_id").html();
+                    }
+                });
+
+                if (flag == 0) {
+                    alert("You must select one appointment!")
+                }
+                else  {
+                    $.ajax({
+                        url : 'final_app_reg',
+                        data : {
+                            "pat_id" : pat_id,
+                            "doc_id" : doc_id,
+                            "desc" : desc,
+                            "date_key" : date_key,
+                            "time_id" : time_id,
+                        },
+                        dataType : 'json',
+                        success : function (response) {
+                            var msg = "";
+                            if (response === "successful"){
+                                msg = "Congratulations! Your appointment application is successfully registered. Hope to see you on appointment date"
+                            }
+                            else if (response === 'unsuccessful') {
+                                msg = "Sorry!! The appointment cannot be registered for technical difficulties!"
+                            }
+                            else {
+                                msg = "Duplicate Found!! You cannot create an appointment to the same doctor more than once without checking"
+                            }
+                            $("#return_msg").html(msg);
+                            $("#msg_panel").show();
+
+                        }
+                    });
+                }
+
+            }
+
+        })
+    </script>
 
 </body>
 </html>

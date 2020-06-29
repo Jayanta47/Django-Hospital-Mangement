@@ -19,4 +19,9 @@ urlpatterns = [
     path('schedule/data_schedule_prev', views.doc_schedule, name='emp_schedule_data'),
     path('schedule/add_data', views.doc_save_schedule, name='save_schedule_data'),
     path('schedule/delete_schedule', views.doc_delete_schedule, name='delete_schedule_data'),
+    path('load_pat_info', views.pat_data, name='pat_bio_data'),
+    path('load_dept_doc', views.loadDocSelect, name='load_doc_list'),
+    path('reg_temp_pat', views.patient_register, name='patient_register'),
+    path('aux_app_reg', views.appointment_reg, name='app_register'),
+    path('final_app_reg', views.app_reg_final, name='app_reg_final'),
 ]

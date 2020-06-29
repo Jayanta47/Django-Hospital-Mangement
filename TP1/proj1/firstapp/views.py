@@ -25,7 +25,6 @@ def frontpage(request):
 
 
 def appointmentpage(request):
-    print("into appointment")
     if request.method == 'POST':
         print(request.POST.get('fname'))
         for key,value in request.POST.items():
@@ -84,8 +83,9 @@ def testpage(request):
 
 
 def loadDocSelect(request):
-    specialization = request.GET.get('DocDept')
-    return render(request, 'firstapp/dropdown_list.html', {'doctors': ex.getDocSelect(specialization)})
+    specialization = request.GET.get('dept_name')
+    data = ex.getDocSelect(specialization)
+    return HttpResponse(json.dumps(data))
 
 
 def schedule(request):
@@ -119,3 +119,30 @@ def doc_delete_schedule(request):
     for id in del_id_list:
         ex.delete_schedule(id)
     return HttpResponse("")
+
+
+def pat_data(request):
+    pat_id = request.GET.get('pat_id')
+    pat_info = ex.get_pat_by_id(pat_id)
+    return HttpResponse(json.dumps(pat_info))
+
+
+def patient_register(request):
+    datadict = parse.patientRegisterParse(request.GET)
+    result = ex.patientregister(datadict)
+    return HttpResponse(json.dumps(result))
+
+
+def appointment_reg(request):
+    datadict = parse.app_register_parse(request.GET)
+    # print("got here\n data dict")
+    # print(datadict)
+    info_dict, date_dict = ex.process_app_req_init(datadict=datadict)
+    file = [info_dict, date_dict]
+    return HttpResponse(json.dumps(file))
+
+
+def app_reg_final(request):
+    datadict = parse.app_reg_final_parse(request.GET)
+    result = ex.save_app(datadict)
+    return HttpResponse(json.dumps(result))

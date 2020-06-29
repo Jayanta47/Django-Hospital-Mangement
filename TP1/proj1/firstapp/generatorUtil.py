@@ -8,7 +8,8 @@ divClass = {
         'receptionist':'23',
         'manager': '24',
         'administrator': '25',
-        'patient':'1'
+        'patient':'1',
+        'invalid' : "",
     }
 
 
@@ -16,6 +17,7 @@ class GenerateToken:
 
     # cat1 = staff, prole, serial or others
     # cat2 = members of staff: doctor, nurse, receptionist etc
+    # N.B - cat2 is invalid for a serial number
     # serial = serial number of the person
     # N.B -  serial input as a string, not number
     def __init__(self, cat1, cat2, serial):
@@ -41,7 +43,6 @@ class GenerateToken:
         return self.string
 
 
-
-# print("in main")
-# x = GenerateToken("prole", "patient", "4").returnId()
-# print(x)
+if __name__ == "__main__":
+    x = GenerateToken("prole", "patient", "4").returnId()
+    print(x)
