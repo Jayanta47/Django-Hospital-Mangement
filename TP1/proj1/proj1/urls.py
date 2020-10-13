@@ -23,4 +23,5 @@ urlpatterns = [
     path('firstapp/',include('firstapp.urls')),
     path('admin/', admin.site.urls),
     path('data/',views.index2,name = 'data'),
+    path('api/', include('api.urls')),
 ]

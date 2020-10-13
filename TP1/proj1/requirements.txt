@@ -1,0 +1,7 @@
+asgiref @ file:///home/conda/feedstock_root/build_artifacts/asgiref_1592343924301/work
+certifi==2020.4.5.2
+cx-Oracle==7.3.0
+Django @ file:///home/conda/feedstock_root/build_artifacts/django_1591280207983/work
+pytz==2020.1
+sqlparse==0.3.1
+wincertstore==0.2
